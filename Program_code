@@ -1,0 +1,78 @@
+import re
+
+code = """
+VAR
+  a,b: Double;
+  N: Integer;
+BEGIN
+  CASE N of
+    1: BEGIN
+        a:=sqrt(4);b:=1;
+        end;
+ 
+    2: BEGIN
+        a:=log(2);b:=1;
+       END;
+    ELSE WriteLn('ERROR N!');
+ 
+   END;
+"""
+print(code)
+keyword_table_base = set(["SWITCH", "CASE", "BREAK", "END", "IF", "THEN","ELSE","BEGIN","PROGRAM","VAR"])
+x = list(keyword_table_base)
+keyword_table = set()
+divider_table_base = set([";",",","+","-","/","*",":",".","="])
+y = list(divider_table_base)
+divider_table = set()
+identifier_table = set()
+const_table = set()
+
+
+tokens = re.findall(r'[a-zA-Za][a-zA-Zа_d]*|[;,:=]|[\d+\.\d+|\d+]', code)
+consts = re.findall(r'\d+\.\d+|\d+', code)
+print("Ключевые слова:")
+print(x)
+print("Разделители:")
+print(y)
+for token in tokens:
+	if token in keyword_table_base:
+		keyword_table.add(token)
+	if  token in divider_table_base:
+		divider_table.add(token)
+	elif re.match(r'[a-zA-Za][a-zA-Zа_d]*$', token):
+		if not (token in keyword_table):
+			identifier_table.add(token)
+
+print("Полученные Ключевые слова(K1):\n ", keyword_table)
+print("Полученнные Разделители(K2):\n ", divider_table)
+print("Полученные Идентификаторы(K3):\n ", identifier_table)
+z = list(identifier_table)
+g = set(consts);
+print("Полученные Константы(K4):\n ", g)
+g = list(consts)
+g = set(consts);
+g = list(consts)
+
+print("Дескрипторный текст:")
+for token in tokens:
+        if token in keyword_table_base:
+                print("(К1,", x.index(token), end = ')')
+        if  token in divider_table_base:
+                print("(К2,", y.index(token),end = ')')
+        elif re.match(r'[a-zA-Za][a-zA-Zа_d]*$', token):
+                if not (token in keyword_table):
+                        print("(К3,", z.index(token),end = ')' )
+        elif re.match(r'[\d+\.\d+|\d+]*$', token):
+                print("(К4,", g.index(token),end = ')' )
+                
+                
+       
+                
+                
+        
+                
+
+       
+        
+                        	
+
